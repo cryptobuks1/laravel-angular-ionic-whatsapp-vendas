@@ -7,6 +7,6 @@ $factory->define(CodeShopping\Models\Product::class, function (Faker $faker) {
         'name' => $faker->sentence(2),
         'description' => $faker->paragraph,
         'price' => $faker->randomFloat(2, 100, 5000),
-        'stock' => 0,
+        'stock' => 10,
     ];
 });
