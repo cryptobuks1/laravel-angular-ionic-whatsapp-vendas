@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {ModalComponent} from "../../../bootstrap/modal/modal.component";
 import {Category} from "../../../../model";
+import {CategoryHttpService} from "../../../../services/http/category-http.service";
 
 @Component({
   selector: 'category-delete-modal',
@@ -11,7 +12,6 @@ import {Category} from "../../../../model";
 export class CategoryDeleteModalComponent implements OnInit {
 
   category: Category = null;
-
   _categoryId: number;
 
   @Output() onSuccess: EventEmitter<any> = new EventEmitter<any>();
@@ -19,7 +19,7 @@ export class CategoryDeleteModalComponent implements OnInit {
 
   @ViewChild(ModalComponent, {read: '', static: true}) modal: ModalComponent;
 
-  constructor(private http: HttpClient) { }
+  constructor(private categoryHttp: CategoryHttpService) { }
 
   ngOnInit() {
   }
@@ -28,23 +28,14 @@ export class CategoryDeleteModalComponent implements OnInit {
   set categoryId(value) {
     this._categoryId = value;
     if(this._categoryId) {
-      const token = window.localStorage.getItem('token');
-      this.http.get<{data: any}>(`http://localhost:8000/api/categories/${value}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-        .subscribe((response) => this.category = response.data);
+      this.categoryHttp
+        .get(this._categoryId)
+        .subscribe(category => this.category = category);
     }
   }
 
   destroy() {
-    const token = window.localStorage.getItem('token');
-    this.http.delete(`http://localhost:8000/api/categories/${this._categoryId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    this.categoryHttp.destroy(this._categoryId)
       .subscribe((category) => {
         this.onSuccess.emit(category);
         this.modal.hide();
@@ -58,5 +49,4 @@ export class CategoryDeleteModalComponent implements OnInit {
   hideModal($event) {
     console.log($event);
   }
-
 }

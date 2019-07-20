@@ -1,18 +1,20 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../../../bootstrap/modal/modal.component";
 import {HttpErrorResponse} from "@angular/common/http";
-import {Category} from "../../../../model";
-import {CategoryHttpService} from "../../../../services/http/category-http.service";
+import {Product} from "../../../../model";
+import {ProductHttpService} from "../../../../services/http/product-http.service";
 
 @Component({
-  selector: 'category-new-modal',
-  templateUrl: './category-new-modal.component.html',
-  styleUrls: ['./category-new-modal.component.css']
+  selector: 'product-new-modal',
+  templateUrl: './product-new-modal.component.html',
+  styleUrls: ['./product-new-modal.component.css']
 })
-export class CategoryNewModalComponent implements OnInit {
+export class ProductNewModalComponent implements OnInit {
 
-  category: Category = {
+  product: Product = {
     name: '',
+    description: '',
+    price: 0,
     active: true
   };
 
@@ -21,16 +23,16 @@ export class CategoryNewModalComponent implements OnInit {
   @Output() onSuccess: EventEmitter<any> = new EventEmitter<any>();
   @Output() onError: EventEmitter<HttpErrorResponse> = new EventEmitter<HttpErrorResponse>();
 
-  constructor(public categoryHttp: CategoryHttpService) { }
+  constructor(public productHttp: ProductHttpService) { }
 
   ngOnInit() {
   }
 
   submit() {
-    this.categoryHttp.create(this.category).subscribe((category) => {
-        this.onSuccess.emit(category);
-        this.modal.hide();
-      }, error => this.onError.emit(error));
+    this.productHttp.create(this.product).subscribe((product) => {
+      this.onSuccess.emit(product);
+      this.modal.hide();
+    }, error => this.onError.emit(error));
   }
 
   showModal() {
