@@ -4,14 +4,14 @@ import {HttpResource, SearchParams, SearchParamsBuilder} from "./http-resource";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserHttpService implements HttpResource<User> {
 
-  private token: string = window.localStorage.getItem('token');
-  private baseUrl: string = 'http://localhost:8000/api/users';
+  private baseUrl: string = `${environment.api.url}/users`;
 
   constructor(private http: HttpClient) { }
 
@@ -20,39 +20,28 @@ export class UserHttpService implements HttpResource<User> {
     const params = new HttpParams({
       fromObject: (<any>sParams)
     });
-    return this.http.get<{ data: Array<User>, meta: any }>(`${this.baseUrl}`, {
-      params,
-      headers: { 'Authorization': `Bearer ${this.token}` }
-    });
+    return this.http.get<{ data: Array<User>, meta: any }>(`${this.baseUrl}`, {params});
   }
 
   get(id: number): Observable<User> {
-    return this.http.get<{ data: User }>(`${this.baseUrl}/${id}`, {
-      headers: { 'Authorization': `Bearer ${this.token}` }
-    }).pipe(
+    return this.http.get<{ data: User }>(`${this.baseUrl}/${id}`).pipe(
       map(response => response.data)
     );
   }
 
   create(data: User): Observable<User> {
-    return this.http.post<{ data: User }>(`${this.baseUrl}`, data, {
-      headers: { 'Authorization': `Bearer ${this.token}` }
-    }).pipe(
+    return this.http.post<{ data: User }>(`${this.baseUrl}`, data).pipe(
       map(response => response.data)
     );
   }
 
   update(id: number, data: User): Observable<User> {
-    return this.http.put<{ data: User }>(`${this.baseUrl}/${id}`, data, {
-      headers: { 'Authorization': `Bearer ${this.token}` }
-    }).pipe(
+    return this.http.put<{ data: User }>(`${this.baseUrl}/${id}`, data).pipe(
       map(response => response.data)
     );
   }
 
   destroy(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`, {
-      headers: { 'Authorization': `Bearer ${this.token}` }
-    });
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

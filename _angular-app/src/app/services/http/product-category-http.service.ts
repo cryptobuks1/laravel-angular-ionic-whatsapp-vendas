@@ -3,13 +3,14 @@ import {Observable} from "rxjs";
 import {ProductCategory} from "../../model";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductCategoryHttpService {
 
-  private baseApi = 'http://localhost:8000/api';
+  private baseApi = `${environment.api.url}`;
   private token: string = window.localStorage.getItem('token');
 
   constructor(private http: HttpClient) { }
