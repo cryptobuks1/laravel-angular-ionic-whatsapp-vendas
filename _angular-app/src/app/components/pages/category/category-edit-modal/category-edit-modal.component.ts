@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../../../bootstrap/modal/modal.component";
 import {HttpErrorResponse} from "@angular/common/http";
-import {Category} from "../../../../model";
 import {CategoryHttpService} from "../../../../services/http/category-http.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'category-edit-modal',
@@ -11,10 +11,7 @@ import {CategoryHttpService} from "../../../../services/http/category-http.servi
 })
 export class CategoryEditModalComponent implements OnInit {
 
-  category: Category = {
-    name: '',
-    active: true
-  };
+  form: FormGroup;
 
   _categoryId: number;
 
@@ -23,7 +20,12 @@ export class CategoryEditModalComponent implements OnInit {
 
   @ViewChild(ModalComponent, {read: '', static: true}) modal: ModalComponent;
 
-  constructor(private categoryHttp: CategoryHttpService) { }
+  constructor(private categoryHttp: CategoryHttpService, private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      name: '',
+      active: true
+    });
+  }
 
   ngOnInit() {
   }
@@ -33,7 +35,7 @@ export class CategoryEditModalComponent implements OnInit {
     this._categoryId = value;
     if(this._categoryId) {
       this.categoryHttp.get(this._categoryId)
-        .subscribe(category => this.category = category,
+        .subscribe(category => this.form.patchValue(category),
           responseError => {
             if(responseError.status == 401) {
               this.modal.hide();
@@ -43,7 +45,7 @@ export class CategoryEditModalComponent implements OnInit {
   }
 
   submit() {
-    this.categoryHttp.update(this._categoryId, this.category)
+    this.categoryHttp.update(this._categoryId, this.form.value)
       .subscribe((category) => {
         this.onSuccess.emit(category);
         this.modal.hide();
@@ -55,6 +57,6 @@ export class CategoryEditModalComponent implements OnInit {
   }
 
   hideModal($event) {
-    console.log($event);
+
   }
 }

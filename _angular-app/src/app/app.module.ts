@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { CategoryListComponent } from './components/pages/category/category-list/category-list.component';
 
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { AlertErrorComponent } from './components/bootstrap/alert-error/alert-error.component';
 import { ModalComponent } from './components/bootstrap/modal/modal.component';
@@ -32,6 +32,10 @@ import {AppRoutingModule} from "./app-routing.module";
 import { SortColumnComponent } from './components/common/sort-column/sort-column.component';
 import { CategorySearchFormComponent } from './components/pages/category/category-search-form/category-search-form.component';
 import { ProductSearchFormComponent } from './components/pages/product/product-search-form/product-search-form.component';
+import { CategoryFormComponent } from './components/pages/category/category-form/category-form.component';
+import { ProductFormComponent } from './components/pages/product/product-form/product-form.component';
+import { FieldErrorComponent } from './components/bootstrap/field-error/field-error.component';
+import { IsInvalidDirective } from './directives/is-invalid.directive';
 
 
 
@@ -70,11 +74,16 @@ function jwtFactory(authService: AuthService) {
     NavbarComponent,
     SortColumnComponent,
     CategorySearchFormComponent,
-    ProductSearchFormComponent
+    ProductSearchFormComponent,
+    CategoryFormComponent,
+    ProductFormComponent,
+    FieldErrorComponent,
+    IsInvalidDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     NgxPaginationModule,

@@ -57,6 +57,11 @@ export class ProductEditModalComponent implements OnInit {
   }
 
   hideModal($event) {
-    console.log($event);
+    this.product = {
+      name: '',
+      description: '',
+      price: 0,
+      active: true
+    };
   }
 }
