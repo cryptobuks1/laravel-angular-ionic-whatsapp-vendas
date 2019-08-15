@@ -36,6 +36,8 @@ import { CategoryFormComponent } from './components/pages/category/category-form
 import { ProductFormComponent } from './components/pages/product/product-form/product-form.component';
 import { FieldErrorComponent } from './components/bootstrap/field-error/field-error.component';
 import { IsInvalidDirective } from './directives/is-invalid.directive';
+import { ListErrorComponent } from './components/bootstrap/list-error/list-error.component';
+import { CardErrorComponent } from './components/bootstrap/card-error/card-error.component';
 
 
 
@@ -78,7 +80,9 @@ function jwtFactory(authService: AuthService) {
     CategoryFormComponent,
     ProductFormComponent,
     FieldErrorComponent,
-    IsInvalidDirective
+    IsInvalidDirective,
+    ListErrorComponent,
+    CardErrorComponent
   ],
   imports: [
     BrowserModule,
